@@ -56,6 +56,7 @@ declare global {
     // https://github.com/Microsoft/TypeScript/issues/5478
     interface IntrinsicAttributes {
       ref?: HTMLElement | ((e: HTMLElement) => void);
+      $name?: string,
     }
 
     // https://github.com/ryansolid/babel-plugin-jsx-dom-expressions#special-binding

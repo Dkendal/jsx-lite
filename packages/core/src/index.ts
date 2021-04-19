@@ -37,3 +37,13 @@ export * from './types/jsx-lite-component';
 
 export * from './plugins/compile-away-builder-components';
 export * from './plugins/map-styles';
+
+export interface ImageProps {
+  backgroundSize: string,
+  backgroundPosition: string,
+  sizes: string,
+  lazy: string,
+  image: string,
+}
+
+export declare function Image(props: ImageProps): JSX.Element
