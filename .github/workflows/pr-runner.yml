@@ -45,13 +45,13 @@ jobs:
       working-directory: packages/${{ matrix.package }}
 
     - name: Run prettier
-      run: npm run ci:lint
+      run: npm run ci:lint --if-present
       working-directory: packages/${{ matrix.package }}
 
     - name: Run tests
-      run: npm run ci:test
+      run: npm run ci:test --if-present
       working-directory: packages/${{ matrix.package }}
 
     - name: Build
-      run: npm run ci:build
+      run: npm run ci:build --if-present
       working-directory: packages/${{ matrix.package }}
