@@ -100,7 +100,9 @@
     "start": "node scripts/start.js",
     "build": "GENERATE_SOURCEMAP=false node scripts/build.js",
     "test": "node scripts/test.js",
-    "release": "npm run build && firebase deploy --only hosting"
+    "release": "npm run build && firebase deploy --only hosting",
+    "ci:build": "npm run build",
+    "ci:test": "npm run test"
   },
   "eslintConfig": {
     "extends": [

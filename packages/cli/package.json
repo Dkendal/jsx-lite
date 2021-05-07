@@ -18,7 +18,9 @@
     "test": "npx jest",
     "watch": "npx jest --watch",
     "snapupdate": "npx jest --updateSnapshot",
-    "coverage": "npx jest --coverage"
+    "coverage": "npx jest --coverage",
+    "ci:build": "npm run build",
+    "ci:test": "npm run test"
   },
   "files": [
     "tsconfig.json",

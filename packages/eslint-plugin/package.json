@@ -20,7 +20,9 @@
     "test": "jest",
     "build": "tsc",
     "start": "tsc -w",
-    "build:declaration": "tsc --project tsconfig.build.json"
+    "build:declaration": "tsc --project tsconfig.build.json",
+    "ci:build": "npm run build",
+    "ci:test": "npm run test"
   },
   "files": [
     "dist"
