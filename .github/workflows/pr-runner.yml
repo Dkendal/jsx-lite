@@ -47,7 +47,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12, 14]
-        package: ["cli", "core", "fiddle", "eslint-plugin"]
+        package: ["cli", "core", "eslint-plugin"]
 
     steps:
     - name: Setup
