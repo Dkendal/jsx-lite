@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  lint:
+  checks:
     runs-on: ubuntu-latest
 
     steps:
@@ -35,54 +35,18 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-node-
 
-    - name: Install dependencies
-      run: npm ci --ignore-scripts
-
-    - name: Lint
-      run: npm run ci:lint
-
-  build:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12, 14]
-        package: ["cli", "core", "eslint-plugin"]
-
-    steps:
-    - name: Setup
-      uses: actions/checkout@v2
-
-    - name: Use node version ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-
-    - name: Get npm cache directory
-      id: npm-cache-dir
-      run: |
-        echo "::set-output name=dir::$(npm config get cache)"
-
-    - uses: actions/cache@v2
-      id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
-      with:
-        path: ${{ steps.npm-cache-dir.outputs.dir }}
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-
    # Re: https://github.com/actions/setup-node/pull/125
     - name: Register Problem Matcher for TSC
       run: echo "##[add-matcher].github/tsc.json"
 
     - name: Install dependencies
-      run: npm ci --ignore-scripts
-      working-directory: packages/${{ matrix.package }}
+      run: npx lerna bootstrap --ci --ignore-scripts
+
+    - name: Lint
+      run: npm run ci:lint
+
+    - name: Run build
+      run: npm run ci:build
 
     - name: Run tests
-      run: npm run ci:test --if-present
-      working-directory: packages/${{ matrix.package }}
-
-    - name: Build
-      run: npm run ci:build --if-present
-      working-directory: packages/${{ matrix.package }}
+      run: npm run ci:test
