@@ -10,7 +10,38 @@ on:
       - main
 
 jobs:
-  checks:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Setup
+      uses: actions/checkout@v2
+
+    - name: Use node version ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+
+    - name: Get npm cache directory
+      id: npm-cache-dir
+      run: |
+        echo "::set-output name=dir::$(npm config get cache)"
+
+    - uses: actions/cache@v2
+      id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
+      with:
+        path: ${{ steps.npm-cache-dir.outputs.dir }}
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install dependencies
+      run: npm ci --ignore-scripts
+
+    - name: Lint
+      run: npm run ci:lint
+
+  build:
     runs-on: ubuntu-latest
 
     strategy:
@@ -42,10 +73,6 @@ jobs:
 
     - name: Install dependencies
       run: npm ci --ignore-scripts
-      working-directory: packages/${{ matrix.package }}
-
-    - name: Run prettier
-      run: npm run ci:lint --if-present
       working-directory: packages/${{ matrix.package }}
 
     - name: Run tests
